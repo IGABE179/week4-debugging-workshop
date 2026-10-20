@@ -6,7 +6,8 @@ const cart = [
 
 function getSubtotal(items) {
   let subtotal = 0
-  for (let i = 0; i <= items.length; i++) {
+  //i is a counter, and items.length is the total number of items in the array. A 3-item array has indexes 0, 1, and 2, so using i <= items.length accesses an invalid index; use i < items.length instead
+  for (let i = 0; i < items.length; i++) {
     subtotal += items[i].price * items[i].qty
   }
   return subtotal
