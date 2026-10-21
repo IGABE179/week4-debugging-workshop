@@ -6,16 +6,21 @@ const cart = [
 
 function getSubtotal(items) {
   let subtotal = 0
-  //i is a counter, and items.length is the total number of items in the array. A 3-item array has indexes 0, 1, and 2, so using i <= items.length accesses an invalid index; use i < items.length instead
+ // The bug was using i <= items.length, which accessed an index outside the array.
+// I used DevTools to investigate the error and understand why the function failed.
+// I fixed it by changing the condition to i < items.length.
   for (let i = 0; i < items.length; i++) {
     subtotal += items[i].price * items[i].qty
   }
   return subtotal
 }
 
+//The bug was that subtotals above 20,000 received only a 10% discount.
+// I used DevTools to check the function and found that the first condition ran before the second.
+// I fixed it by checking the higher subtotal first so the correct discount is returned.
 function getDiscount(subtotal) {
-  if (subtotal > 10000) return 0.1
-  else if (subtotal > 20000) return 0.2
+  if (subtotal > 20000) return 0.2
+  else if (subtotal > 10000) return 0.1
   return 0
 }
 
