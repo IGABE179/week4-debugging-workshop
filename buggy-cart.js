@@ -1,3 +1,6 @@
+// RISKY VALUE: Notebook price is the string "1500", while the other prices are numbers.
+// Multiplication converts "1500" to a number, but adding a string can join values instead.
+// I identified this by checking the price type and comparing the multiplication and addition results in DevTools.
 const cart = [
   { name: "Notebook", price: "1500", qty: 2 },
   { name: "Pen",      price: 300,    qty: 5 },
@@ -6,18 +9,20 @@ const cart = [
 
 function getSubtotal(items) {
   let subtotal = 0
- // The bug was using i <= items.length, which accessed an index outside the array.
-// I used DevTools to investigate the error and understand why the function failed.
-// I fixed it by changing the condition to i < items.length.
+
+  // The <= condition accessed an index outside the array.
+  // DevTools showed the error when i = 3, even though the array had only 3 items.
+  // I fixed it by changing <= to <.
   for (let i = 0; i < items.length; i++) {
     subtotal += items[i].price * items[i].qty
   }
+
   return subtotal
 }
 
-//The bug was that subtotals above 20,000 received only a 10% discount.
-// I used DevTools to check the function and found that the first condition ran before the second.
-// I fixed it by checking the higher subtotal first so the correct discount is returned.
+// DevTools showed that getDiscount(25000) returned 0.1 instead of 0.2.
+// The first condition matched before the higher discount condition.
+// I fixed it by checking the higher threshold first.
 function getDiscount(subtotal) {
   if (subtotal > 20000) return 0.2
   else if (subtotal > 10000) return 0.1
