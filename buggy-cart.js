@@ -23,12 +23,13 @@ function getDiscount(subtotal) {
   else if (subtotal > 10000) return 0.1
   return 0
 }
-
+// The bug was subtracting the discount rate instead of the discount amount.
+// I paused on the total line with a breakpoint, and the Scope panel showed the subtotal and discount values.
+// I fixed it by multiplying the subtotal by the discount rate before subtracting it.
 function getTotal(items) {
   const subtotal = getSubtotal(items)
   const discount = getDiscount(subtotal)
-  const total = subtotal - discount
+  const total = subtotal - (subtotal * discount)
   return total
 }
-
 console.log(getTotal(cart))
